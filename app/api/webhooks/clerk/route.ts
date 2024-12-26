@@ -9,7 +9,7 @@ import { createUser, deleteUser, updateUser } from "@/lib/actions/user.actions";
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
-  const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
+  const WEBHOOK_SECRET = process.env.SIGNING_SECRET;
 
   if (!WEBHOOK_SECRET) {
     throw new Error(
@@ -61,20 +61,22 @@ export async function POST(req: Request) {
   if (eventType === "user.created") {
     const { id, email_addresses, image_url, first_name, last_name, username } = evt.data;
 
-    const user = {
+    const user: CreateUserParams = {
       clerkId: id,
       email: email_addresses[0].email_address,
       username: username!,
-      firstName: first_name,
-      lastName: last_name,
+      firstName: first_name ?? "", // Default to empty string if null
+      lastName: last_name ?? "",   // Default to empty string if null
       photo: image_url,
     };
 
     const newUser = await createUser(user);
 
+    const response = await clerkClient();
+
     // Set public metadata
     if (newUser) {
-      await clerkClient.users.updateUserMetadata(id, {
+      await response.users.updateUserMetadata(id, {
         publicMetadata: {
           userId: newUser._id,
         },
@@ -89,8 +91,8 @@ export async function POST(req: Request) {
     const { id, image_url, first_name, last_name, username } = evt.data;
 
     const user = {
-      firstName: first_name,
-      lastName: last_name,
+      firstName: first_name ?? "", // Default to empty string if null
+      lastName: last_name ?? "",   // Default to empty string if null
       username: username!,
       photo: image_url,
     };
