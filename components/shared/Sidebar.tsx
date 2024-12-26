@@ -12,12 +12,12 @@ import { Button } from '../ui/button';
 const Sidebar = () => {
     const pathname = usePathname();
 
-    const handleSignOut = () => {
-        if (typeof window !== "undefined") {
-          // Redirect to home after sign-out
-          window.location.href = "/";
-        }
-      };
+    // const handleSignOut = () => {
+    //     if (typeof window !== "undefined") {
+    //       // Redirect to home after sign-out
+    //       window.location.href = "/";
+    //     }
+    //   };
     
 
     return (
@@ -66,23 +66,16 @@ const Sidebar = () => {
                                 <UserButton
                                     afterSwitchSessionUrl="/"
                                     showName
-                                    appearance={{
-                                        elements: {
-                                        userButtonTrigger: {
-                                            onClick: handleSignOut,
-                                        },
-                                        },
-                                    }}
                                 />
                             </li>
                         </ul>
                     </SignedIn>
 
-                    <SignedOut>
+                    {/* <SignedOut>
                         <Button asChild className="button bg-purple-gradient bg-cover">
                             <Link href="/sign-in">Login</Link>
                         </Button>
-                    </SignedOut>
+                    </SignedOut> */}
 
                 </nav>
             </div>
