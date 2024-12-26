@@ -8,8 +8,17 @@ import { usePathname } from 'next/navigation'
 import React from 'react'
 import { Button } from '../ui/button';
 
+
 const Sidebar = () => {
     const pathname = usePathname();
+
+    const handleSignOut = () => {
+        if (typeof window !== "undefined") {
+          // Redirect to home after sign-out
+          window.location.href = "/";
+        }
+      };
+    
 
     return (
         <aside className='sidebar'>
@@ -53,7 +62,18 @@ const Sidebar = () => {
                                 })}
 
                             <li className="flex-center cursor-pointer gap-2 p-4">
-                                <UserButton afterSwitchSessionUrl='/' showName />
+                                {/*<UserButton afterSwitchSessionUrl='/' showName />*/}
+                                <UserButton
+                                    afterSwitchSessionUrl="/"
+                                    showName
+                                    appearance={{
+                                        elements: {
+                                        userButtonTrigger: {
+                                            onClick: handleSignOut,
+                                        },
+                                        },
+                                    }}
+                                />
                             </li>
                         </ul>
                     </SignedIn>
