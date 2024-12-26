@@ -4,6 +4,8 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import {
   ClerkProvider,
+  RedirectToSignIn,
+  SignedOut,
 } from '@clerk/nextjs';
 
 const IBMPlex = IBM_Plex_Sans({
@@ -33,6 +35,12 @@ export default function RootLayout({
       {children}
     </body>
     </html>
+    <SignedOut>
+        <RedirectToSignIn
+          signInFallbackRedirectUrl="/"
+          signUpFallbackRedirectUrl="/"
+        />
+      </SignedOut>
     </ClerkProvider>
   );
 }
